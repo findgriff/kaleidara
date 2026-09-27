@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "kaleidara",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Create, colour and publish premium printable artwork from ChatGPT and Codex.",
   "author": {
     "name": "AGENT OS",

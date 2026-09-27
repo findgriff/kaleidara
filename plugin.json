@@ -1,0 +1,32 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "kaleidara",
+  "version": "0.1.0",
+  "description": "Create, colour and publish premium printable artwork from ChatGPT and Codex.",
+  "author": {
+    "name": "AGENT OS",
+    "url": "https://github.com/findgriff"
+  },
+  "homepage": "https://github.com/findgriff/kaleidara",
+  "repository": "https://github.com/findgriff/kaleidara",
+  "license": "MIT",
+  "keywords": ["mandalas", "colouring-books", "color-by-numbers", "patterns", "kdp", "print-publishing", "chatgpt-apps", "mcp"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Kaleidara",
+    "shortDescription": "Create, colour and publish printable artwork",
+    "longDescription": "Kaleidara is a creative publishing workflow for mandalas, colouring pages, colour-by-numbers artwork and seamless patterns. It helps turn concepts into print-aware book assets, with human review and KDP validation built into the workflow.",
+    "developerName": "AGENT OS",
+    "category": "Design & Creativity",
+    "capabilities": ["Interactive", "Read", "Write"],
+    "websiteURL": "https://github.com/findgriff/kaleidara",
+    "composerIcon": "./assets/kaleidara-logo.png",
+    "logo": "./assets/kaleidara-logo.png",
+    "defaultPrompt": [
+      "Help me create a premium mandala colouring-book concept.",
+      "Turn this artwork brief into a colour-by-numbers production plan.",
+      "Prepare a KDP-ready colouring-book checklist for this project."
+    ],
+    "brandColor": "#46D7C0"
+  }
+}

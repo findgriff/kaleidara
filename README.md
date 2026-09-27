@@ -103,6 +103,18 @@ npm run build
 
 Current test result: 5 tests passing. The build produces the embedded widget at `assets/creative-studio.html`.
 
+## Install as an OpenAI/Codex plugin marketplace
+
+In the OpenAI desktop app or Codex Plugins screen, choose **Add plugin marketplace** and enter:
+
+- **Source:** `findgriff/kaleidara`
+- **Git ref:** `main`
+- **Sparse paths:** leave blank
+
+The blank Sparse paths are intentional: Kaleidara uses the repository root plugin manifest (`plugin.json`) and the compatibility manifest at `.codex-plugin/plugin.json`.
+
+This installs the Kaleidara workflow package and branding. It does not deploy the live media-generation server. To use the ChatGPT Apps SDK widget and real providers, connect the separately deployed HTTPS MCP endpoint after installation and configure provider credentials on the server only.
+
 ## Local setup
 
 Requirements:

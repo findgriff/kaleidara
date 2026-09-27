@@ -1,0 +1,19 @@
+{
+  "name": "kaleidara",
+  "version": "0.1.0",
+  "description": "Create, colour and publish premium printable artwork from ChatGPT and Codex.",
+  "author": "AGENT OS",
+  "repository": "https://github.com/findgriff/kaleidara",
+  "license": "MIT",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Kaleidara",
+    "shortDescription": "Create, colour and publish printable artwork",
+    "longDescription": "Mandala, colouring-book, colour-by-numbers and pattern workflows with print-aware KDP preparation.",
+    "developerName": "AGENT OS",
+    "category": "Design & Creativity",
+    "brandColor": "#46D7C0",
+    "logo": "./assets/kaleidara-logo.png",
+    "composerIcon": "./assets/kaleidara-logo.png"
+  }
+}

@@ -17,6 +17,21 @@ Use this workflow for creative publishing projects. Kaleidara is not a licence t
 6. Run print QA: page size, page count, resolution, clipping, blank pages, number placement, colour-key completeness, pattern seams, margins, font embedding and PDF readability.
 7. Export the final package and identify every file clearly. Do not claim KDP readiness until the PDF has been visually inspected and checked in Amazon KDP Print Previewer.
 
+## Default reverse page
+
+Every colouring-book artwork page uses the versioned layout in `templates/reverse-page-template.json` unless the user selects another template. The artwork front remains clean; the reverse side contains:
+
+- A large, centred, editorial-style inspirational quotation.
+- The historical figure's name and birth/death years.
+- A source and rights note for the quotation.
+- Eight large, blank colour cubes in a two-column grid.
+- A `Pen / colour:` field below each cube.
+- Colour-by-numbers mode where cube labels must match every number in the artwork.
+- Black-and-white, non-full-bleed printing to reduce marker bleed-through.
+
+Use large square swatches, not narrow lines. Keep the quotation visually dominant and use an editorial serif italic style with generous spacing. Never publish a quotation without a source and rights status.
+
+The default example is Emily Dickinson's public-domain poem excerpt, but the production library should rotate through verified historical figures and artists rather than repeating one author.
 ## Specialist modes
 
 - **Mandala:** radial symmetry, segment count, line weight, complexity and circular page composition.

@@ -164,6 +164,8 @@ Kaleidara will create production files for manual upload to Amazon KDP rather th
 - ZIP export.
 - Machine-readable QA report.
 
+The default reverse-page template is stored at `templates/reverse-page-template.json`. It places the artwork on the front and, on the reverse, a large styled sourced quotation plus eight large blank colour cubes with pen/colour fields. Colour-by-numbers mode requires cube labels to match every number in the facing artwork.
+
 Amazon KDP Print Previewer remains the final publishing authority. Generated files must be inspected before upload.
 
 ## Licence and attribution

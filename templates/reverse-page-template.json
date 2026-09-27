@@ -1,0 +1,72 @@
+{
+  "templateId": "kaleidara-reverse-page-v1",
+  "version": "1.0.0",
+  "name": "Kaleidara Inspiration & Palette Reverse Page",
+  "purpose": "The reverse side of every colouring artwork page: a large inspirational quotation followed by blank colour cubes for testing the pens used on the facing artwork.",
+  "pageRole": "reverse-of-artwork",
+  "default": true,
+  "artworkPage": {
+    "printed": false,
+    "reason": "Keep the reverse of the artwork blank apart from the palette and inspiration content to reduce marker bleed-through."
+  },
+  "quoteBlock": {
+    "position": "upper-half-centred",
+    "fontFamily": "editorial-serif",
+    "fontStyle": "italic",
+    "fontSizePt": 24,
+    "lineHeight": 1.35,
+    "maxLines": 8,
+    "quotationMarks": "oversized",
+    "alignment": "centre",
+    "attribution": {
+      "format": "— {name}\n{born}–{died}",
+      "fontFamily": "editorial-serif",
+      "fontStyle": "normal",
+      "fontSizePt": 11,
+      "alignment": "centre"
+    },
+    "sourceNote": {
+      "enabled": true,
+      "fontSizePt": 7,
+      "alignment": "centre",
+      "requiredFields": ["source", "rightsStatus"]
+    }
+  },
+  "palette": {
+    "title": "MY COLOUR PALETTE",
+    "instruction": "Colour each cube with the pen you have chosen for the opposite artwork page, then record the pen or colour name below.",
+    "position": "lower-half-centred",
+    "columns": 2,
+    "rows": 4,
+    "cubeSizeInches": 0.72,
+    "cubeGapInches": 0.28,
+    "outlinePt": 1.2,
+    "fill": "none",
+    "labelInside": true,
+    "labelFontSizePt": 10,
+    "penField": true,
+    "penFieldLabel": "Pen / colour:",
+    "defaultCubes": 8,
+    "maxCubes": 12,
+    "colourByNumbersMode": {
+      "enabled": true,
+      "label": "COLOUR KEY",
+      "matchArtworkNumbers": true,
+      "requireEveryNumber": true
+    }
+  },
+  "print": {
+    "defaultDpi": 300,
+    "defaultColourMode": "black-and-white",
+    "avoidFullBleed": true,
+    "safeMarginInches": 0.375
+  },
+  "defaultExample": {
+    "quote": "\u201cHope\u201d is the thing with feathers -\nThat perches in the soul -\nAnd sings the tune without the words -\nAnd never stops - at all -",
+    "name": "Emily Dickinson",
+    "born": 1830,
+    "died": 1886,
+    "source": "The Poems of Emily Dickinson, first published posthumously in 1891",
+    "rightsStatus": "public-domain-source-verified"
+  }
+}

@@ -13,7 +13,7 @@
     "developerName": "AGENT OS",
     "category": "Design & Creativity",
     "brandColor": "#46D7C0",
-    "logo": "./assets/kaleidara-logo.png",
-    "composerIcon": "./assets/kaleidara-logo.png"
+    "logo": "./assets/kaleidara-icon.png",
+    "composerIcon": "./assets/kaleidara-icon.png"
   }
 }

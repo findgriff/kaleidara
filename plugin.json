@@ -20,8 +20,8 @@
     "category": "Design & Creativity",
     "capabilities": ["Interactive", "Read", "Write"],
     "websiteURL": "https://github.com/findgriff/kaleidara",
-    "composerIcon": "./assets/kaleidara-logo.png",
-    "logo": "./assets/kaleidara-logo.png",
+    "composerIcon": "./assets/kaleidara-icon.png",
+    "logo": "./assets/kaleidara-icon.png",
     "defaultPrompt": [
       "Help me create a premium mandala colouring-book concept.",
       "Turn this artwork brief into a colour-by-numbers production plan.",

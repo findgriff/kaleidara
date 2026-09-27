@@ -1,5 +1,8 @@
 {
   "name": "kaleidara-marketplace",
+  "interface": {
+    "displayName": "Kaleidara — Create · Colour · Publish"
+  },
   "plugins": [
     {
       "name": "kaleidara",

@@ -3,6 +3,8 @@ dist/
 assets/*
 !assets/kaleidara-logo.svg
 !assets/kaleidara-logo.png
+!assets/kaleidara-icon.svg
+!assets/kaleidara-icon.png
 coverage/
 
 # Never commit real credentials. Only .env.example belongs in git.

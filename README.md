@@ -7,7 +7,7 @@
 <p align="center"><strong>Create. Colour. Publish.</strong><br />The creative publishing studio for ChatGPT.</p>
 
 <p align="center">
-  <a href="https://github.com/findgriff/agent-os-creative-studio/actions"><img src="https://img.shields.io/badge/build-verified-18c7a1?style=flat-square" alt="Build verified" /></a>
+  <a href="https://github.com/findgriff/kaleidara/actions"><img src="https://img.shields.io/badge/build-verified-18c7a1?style=flat-square" alt="Build verified" /></a>
   <img src="https://img.shields.io/badge/ChatGPT-Apps%20SDK-111827?style=flat-square" alt="ChatGPT Apps SDK" />
   <img src="https://img.shields.io/badge/license-MIT-8b7cff?style=flat-square" alt="MIT licence" />
 </p>
@@ -112,8 +112,8 @@ Requirements:
 - HTTPS hosting for ChatGPT connector use.
 
 ```bash
-git clone https://github.com/findgriff/agent-os-creative-studio.git
-cd agent-os-creative-studio
+git clone https://github.com/findgriff/kaleidara.git
+cd kaleidara
 npm install
 cp .env.example .env
 npm run typecheck

@@ -1,18 +1,37 @@
 {
-  "name": "pizzaz-mcp-node",
-  "version": "0.1.0",
+  "name": "agent-os-creative-studio",
+  "version": "1.0.0",
   "type": "module",
   "private": true,
-  "description": "Example MCP server that exposes the Pizzaz demo tools using the official TypeScript SDK.",
+  "description": "AGENT OS Creative Studio — a ChatGPT Apps SDK (MCP) app for generative image and video creation through real provider APIs.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.11"
+  },
   "scripts": {
-    "start": "tsx src/server.ts"
+    "build": "npm run build:widget && npm run build:server",
+    "build:widget": "tsx scripts/build-widget.ts",
+    "build:server": "tsc -p tsconfig.build.json",
+    "dev": "tsx watch src/server.ts",
+    "start": "node dist/server.js",
+    "start:dev": "tsx src/server.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^0.5.0",
-    "zod": "^3.23.8"
+    "@modelcontextprotocol/sdk": "^1.30.1",
+    "zod": "^4.6.5"
   },
   "devDependencies": {
-    "tsx": "^4.19.2",
-    "typescript": "^5.6.3"
+    "@types/node": "^22.10.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "esbuild": "^0.28.2",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3",
+    "vitest": "^5.0.2"
   }
 }

@@ -1,0 +1,15 @@
+node_modules/
+dist/
+assets/
+coverage/
+
+# Never commit real credentials. Only .env.example belongs in git.
+.env
+.env.*
+!.env.example
+
+*.log
+npm-debug.log*
+.DS_Store
+.vscode/
+.idea/

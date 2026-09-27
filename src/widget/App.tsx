@@ -585,7 +585,7 @@ function Header({ provider }: { provider?: ProviderCapability | null }) {
           AOS
         </span>
         <div>
-          <h1 className="aos-title">AGENT OS Creative Studio</h1>
+          <h1 className="aos-title">Kaleidara</h1>
           <p className="aos-subtitle">Generative image and video, wired to real provider APIs</p>
         </div>
       </div>

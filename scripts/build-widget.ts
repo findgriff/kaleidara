@@ -34,7 +34,7 @@ function renderHtml(script: string): string {
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="color-scheme" content="dark" />
-<title>AGENT OS Creative Studio</title>
+<title>Kaleidara — Create · Colour · Publish</title>
 <style>
 html, body { margin: 0; padding: 0; background: #051417; }
 #agent-os-studio-root { display: block; }

@@ -1,66 +1,181 @@
-# AGENT OS Creative Studio
+# Kaleidara
 
-A self-contained ChatGPT Apps SDK / MCP application for real image and video generation through provider APIs. It is an original AGENT OS project built on the MIT-licensed OpenAI Apps SDK example foundation; it is not Higgsfield software and does not use Higgsfield branding or assets.
+<p align="center">
+  <img src="assets/kaleidara-logo.png" alt="Kaleidara — Create, Colour, Publish" width="800" />
+</p>
 
-## Current status
+<p align="center"><strong>Create. Colour. Publish.</strong><br />The creative publishing studio for ChatGPT.</p>
 
-- Real MCP SSE server and embedded dark teal Creative Studio widget.
-- Tools: `list_capabilities`, `estimate_generation`, `generate_media`, `get_generation_status`, `cancel_generation`.
-- Higgsfield provider adapter with server-side credentials and asynchronous job lifecycle.
-- No fake media, seed data or silent fallback: without credentials the app reports `provider not configured`.
-- In-memory job tracking by design in this first version; use a durable store before multi-instance production deployment.
+<p align="center">
+  <a href="https://github.com/findgriff/agent-os-creative-studio/actions"><img src="https://img.shields.io/badge/build-verified-18c7a1?style=flat-square" alt="Build verified" /></a>
+  <img src="https://img.shields.io/badge/ChatGPT-Apps%20SDK-111827?style=flat-square" alt="ChatGPT Apps SDK" />
+  <img src="https://img.shields.io/badge/license-MIT-8b7cff?style=flat-square" alt="MIT licence" />
+</p>
 
-## Requirements
+> *Kaleidara turns an idea into a finished creative product — from the first visual concept to a print-ready colouring book, pattern collection or publishing pack.*
 
-- Node.js 20.11 or newer
-- A Higgsfield API account and credentials for live generation
-- HTTPS public hosting for ChatGPT connector use
+Kaleidara is an original ChatGPT Apps SDK/MCP application developed by AGENT OS. It combines conversational creative direction with real media providers, deterministic artwork processing and production-focused export workflows.
+
+It is designed for creators, illustrators, publishers and small businesses who want more than a single generated image. Kaleidara is built around the complete journey:
+
+**Imagine → Generate → Refine → Validate → Publish**
+
+## What Kaleidara is for
+
+- Mandala and geometric artwork.
+- Printable colouring pages.
+- Colour-by-numbers books.
+- Seamless pattern collections.
+- Activity books and adult colouring books.
+- Product and cover artwork.
+- KDP-ready interior and cover packages.
+- Repeatable collections rather than one-off images.
+
+## ChatGPT tools
+
+The current Apps SDK server exposes:
+
+- `list_capabilities` — show configured real providers and models.
+- `estimate_generation` — price a request before any paid submission.
+- `generate_media` — submit a real image or video job.
+- `get_generation_status` — poll the provider and retrieve real assets.
+- `cancel_generation` — cancel an active provider job where supported.
+
+The specialist publishing layer is the next development track:
+
+- `create_mandala`
+- `create_coloring_page`
+- `create_color_by_numbers`
+- `create_seamless_pattern`
+- `build_coloring_book`
+- `build_kdp_interior`
+- `build_kdp_cover`
+- `validate_kdp_files`
+- `export_book_package`
+
+## Product principles
+
+### Beautiful by default
+
+Kaleidara uses a dark, premium teal interface designed for focused creative work rather than a noisy prompt box.
+
+### Production, not pretend demos
+
+The application never invents generated media. If a real provider is not configured, Kaleidara reports that state clearly.
+
+### Print-aware output
+
+The publishing pipeline is designed around trim size, bleed, gutter, safe margins, resolution, page count and final PDF inspection.
+
+### Human approval remains essential
+
+Kaleidara can accelerate production, but every book must still be visually reviewed and checked in Amazon KDP Print Previewer before publication.
+
+## Architecture
+
+```text
+ChatGPT
+   │ Apps SDK / MCP over HTTPS
+   ▼
+Kaleidara server
+   ├── Creative Studio widget
+   ├── request validation and credit guardrails
+   ├── real provider adapters
+   ├── job status and cancellation
+   └── publishing and QA pipeline (next track)
+          ├── line-art processing
+          ├── colour-region segmentation
+          ├── SVG / PNG / PDF export
+          └── KDP trim, bleed and margin validation
+```
+
+## Current implementation status
+
+The ChatGPT app foundation is complete and verified. The first publishing-specific modules are planned but are not represented as finished until they are built and tested against real output.
+
+Verified commands:
+
+```bash
+npm run typecheck
+npm test
+npm run build
+```
+
+Current test result: 5 tests passing. The build produces the embedded widget at `assets/creative-studio.html`.
 
 ## Local setup
 
+Requirements:
+
+- Node.js 20.11 or newer.
+- A real provider account for live generation.
+- HTTPS hosting for ChatGPT connector use.
+
 ```bash
+git clone https://github.com/findgriff/agent-os-creative-studio.git
+cd agent-os-creative-studio
 npm install
 cp .env.example .env
-# Edit .env and add both HF_API_KEY_ID and HF_API_KEY_SECRET for live calls.
 npm run typecheck
 npm test
 npm run build
 npm start
 ```
 
-The server listens on `http://127.0.0.1:8000` by default. Health check:
+The server listens on port `8000` by default. The health endpoint is:
 
 ```bash
 curl http://127.0.0.1:8000/health
 ```
 
-The MCP SSE endpoint is `/mcp`; it intentionally remains open while streaming. The widget is built into `assets/creative-studio.html` during `npm run build` and is not committed because it is a generated artifact.
+## Real-provider security
 
-## ChatGPT Developer Mode
+- Provider credentials remain server-side.
+- Secrets are never sent to the widget or returned in MCP metadata.
+- `.env` is excluded from Git.
+- Reference media must use public HTTPS URLs; private URLs containing access tokens should never be submitted.
+- Credit ceilings are applied before billable submission.
+- Live generation must run behind an authenticated HTTPS boundary.
 
-1. Deploy this service behind HTTPS.
-2. Set `PUBLIC_BASE_URL`, `ALLOWED_ORIGINS`, and the provider credentials on the server only.
-3. In ChatGPT Developer Mode, add an MCP connector using the server's `/mcp` SSE endpoint.
-4. Call `list_capabilities` first. Generation is paid provider activity and must not be treated as a demo.
+## KDP publishing direction
 
-## Configuration
+Kaleidara will create production files for manual upload to Amazon KDP rather than attempting unsafe account automation. The planned publishing package includes:
 
-See `.env.example`. `HF_API_BASE_URL`, job status/cancel paths and model path overrides are configurable because provider API routes can change. Validate these values against the current Higgsfield API documentation before production deployment.
+- Interior PDF.
+- Cover PDF with spine calculation.
+- Trim and bleed settings.
+- Safe-margin validation.
+- Page-count validation.
+- Contact sheet preview.
+- Colour key pages.
+- Metadata and collection manifest.
+- ZIP export.
+- Machine-readable QA report.
 
-## Security and billing
+Amazon KDP Print Previewer remains the final publishing authority. Generated files must be inspected before upload.
 
-- API credentials never enter widget state, tool output, `_meta`, source control or client-side JavaScript.
-- Reference media must be supplied as public HTTPS URLs; do not send private URLs containing access tokens.
-- Generation is billable. The server applies a per-request credit ceiling before submission, but provider billing remains the source of truth.
-- Never expose the MCP endpoint unauthenticated on the public internet. Put it behind an authenticated reverse proxy or trusted connector boundary.
-- Do not commit `.env`, provider keys or generated output.
+## Licence and attribution
 
-## Development
+Kaleidara is released under the MIT licence. The project was built using the MIT-licensed OpenAI Apps SDK example foundation and remains clearly identified as an independent AGENT OS project. It does not copy Higgsfield branding, assets or proprietary interface code.
 
-```bash
-npm run start:dev
-npm run test:watch
-npm run build
-```
+The name **Kaleidara** is a working brand name and has not yet been formally trademark-cleared. Domain, company-name and trademark checks are required before commercial launch.
 
-The project is MIT licensed. See `LICENSE` and retain upstream attribution for the OpenAI example foundation.
+## Brand
+
+**Name:** Kaleidara
+
+**Meaning:** A coined, globally pronounceable name inspired by kaleidoscopic transformation and crafted artwork.
+
+**Tagline:** Create · Colour · Publish
+
+**Brand character:** Precise, imaginative, premium, calm and production-minded.
+
+**Core colours:**
+
+- Deep studio teal: `#07171B`
+- Kaleidara teal: `#46D7C0`
+- Violet accent: `#8578FF`
+- Warm gold: `#FFD166`
+- Soft white: `#F4FFFC`
+
+Logo source files are available in `assets/kaleidara-logo.svg` and `assets/kaleidara-logo.png`.

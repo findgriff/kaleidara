@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "private": true,
-  "description": "AGENT OS Creative Studio — a ChatGPT Apps SDK (MCP) app for generative image and video creation through real provider APIs.",
+  "description": "Kaleidara — a ChatGPT Apps SDK (MCP) creative publishing studio for real media generation and print-ready books.",
   "license": "MIT",
   "engines": {
     "node": ">=20.11"

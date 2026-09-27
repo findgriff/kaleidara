@@ -18,8 +18,8 @@ const widgetHtml = () => fs.readFileSync(ASSET, "utf8");
 const meta = {
   "openai/outputTemplate": WIDGET_URI,
   "openai/widgetAccessible": true,
-  "openai/toolInvocation/invoking": "Opening Creative Studio",
-  "openai/toolInvocation/invoked": "Creative Studio ready",
+  "openai/toolInvocation/invoking": "Opening Kaleidara",
+  "openai/toolInvocation/invoked": "Kaleidara ready",
 };
 
 const tools: any[] = [
@@ -39,7 +39,7 @@ function errorResult(error: unknown) {
 }
 function createAppServer() {
   const server = new Server({ name: "agent-os-creative-studio", version: "1.0.0" }, { capabilities: { resources: {}, tools: {} } });
-  server.setRequestHandler(ListResourcesRequestSchema, async () => ({ resources: [{ uri: WIDGET_URI, name: "AGENT OS Creative Studio", description: "Dark teal media-generation workspace", mimeType: "text/html+skybridge", _meta: meta }] }));
+  server.setRequestHandler(ListResourcesRequestSchema, async () => ({ resources: [{ uri: WIDGET_URI, name: "Kaleidara", description: "Create, colour and publish print-ready artwork", mimeType: "text/html+skybridge", _meta: meta }] }));
   server.setRequestHandler(ReadResourceRequestSchema, async () => ({ contents: [{ uri: WIDGET_URI, mimeType: "text/html+skybridge", text: widgetHtml(), _meta: meta }] }));
   server.setRequestHandler(ListToolsRequestSchema, async () => ({ tools }));
   server.setRequestHandler(CallToolRequestSchema, async (request) => {

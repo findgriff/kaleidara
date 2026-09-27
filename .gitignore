@@ -1,6 +1,8 @@
 node_modules/
 dist/
-assets/
+assets/*
+!assets/kaleidara-logo.svg
+!assets/kaleidara-logo.png
 coverage/
 
 # Never commit real credentials. Only .env.example belongs in git.

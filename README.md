@@ -14,7 +14,7 @@
 
 > *Kaleidara turns an idea into a finished creative product — from the first visual concept to a print-ready colouring book, pattern collection or publishing pack.*
 
-Kaleidara is an original ChatGPT Apps SDK/MCP application developed by AGENT OS. It combines conversational creative direction with real media providers, deterministic artwork processing and production-focused export workflows.
+Kaleidara is an original ChatGPT Apps SDK/MCP application developed by OpsPocket. It combines conversational creative direction with real media providers, deterministic artwork processing and production-focused export workflows.
 
 It is designed for creators, illustrators, publishers and small businesses who want more than a single generated image. Kaleidara is built around the complete journey:
 
@@ -170,7 +170,7 @@ Amazon KDP Print Previewer remains the final publishing authority. Generated fil
 
 ## Licence and attribution
 
-Kaleidara is released under the MIT licence. The project was built using the MIT-licensed OpenAI Apps SDK example foundation and remains clearly identified as an independent AGENT OS project. It does not copy Higgsfield branding, assets or proprietary interface code.
+Kaleidara is released under the MIT licence. The project was built using the MIT-licensed OpenAI Apps SDK example foundation and remains clearly identified as an independent OpsPocket project. It does not copy Higgsfield branding, assets or proprietary interface code.
 
 The name **Kaleidara** is a working brand name and has not yet been formally trademark-cleared. Domain, company-name and trademark checks are required before commercial launch.
 

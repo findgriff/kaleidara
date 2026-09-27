@@ -1,9 +1,9 @@
 {
   "name": "kaleidara",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Create, colour and publish print-aware colouring books and pattern collections.",
   "author": {
-    "name": "AGENT OS",
+    "name": "OpsPocket",
     "url": "https://github.com/findgriff"
   },
   "homepage": "https://github.com/findgriff/kaleidara",
@@ -14,8 +14,8 @@
   "interface": {
     "displayName": "Kaleidara",
     "shortDescription": "Create, colour and publish print-aware colouring books and pattern collections.",
-    "longDescription": "Kaleidara is an AGENT OS creative publishing workflow for ChatGPT and Codex. Plan mandalas, colouring pages, colour-by-numbers concepts and pattern collections with visible production decisions, sourced inspiration, print-aware checks and clear output states. The package includes a versioned reverse-page specification with a large quotation block and eight colour-test cubes. The repository also contains the source of a self-hostable Apps SDK/MCP foundation with five working tools for provider capabilities, cost estimation, generation jobs, status polling and cancellation. A live provider endpoint and the future KDP PDF/book-export engine must be configured or built separately; this plugin does not pretend those services are hosted or finished.",
-    "developerName": "AGENT OS",
+    "longDescription": "Kaleidara is an OpsPocket creative publishing workflow for ChatGPT and Codex. Plan mandalas, colouring pages, colour-by-numbers concepts and pattern collections with visible production decisions, sourced inspiration, print-aware checks and clear output states. The package includes a versioned reverse-page specification with a large quotation block and eight colour-test cubes. The repository also contains the source of a self-hostable Apps SDK/MCP foundation with five working tools for provider capabilities, cost estimation, generation jobs, status polling and cancellation. A live provider endpoint and the future KDP PDF/book-export engine must be configured or built separately; this plugin does not pretend those services are hosted or finished.",
+    "developerName": "OpsPocket",
     "category": "Design & Creativity",
     "capabilities": ["Interactive", "Read", "Write"],
     "websiteURL": "https://github.com/findgriff/kaleidara",

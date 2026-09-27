@@ -1,10 +1,10 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "kaleidara",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Create, colour and publish print-aware colouring books and pattern collections.",
   "author": {
-    "name": "AGENT OS",
+    "name": "OpsPocket",
     "url": "https://github.com/findgriff"
   },
   "homepage": "https://github.com/findgriff/kaleidara",
@@ -15,8 +15,8 @@
   "interface": {
     "displayName": "Kaleidara",
     "shortDescription": "Create, colour and publish print-aware colouring books and pattern collections.",
-    "longDescription": "Kaleidara is a creative publishing workflow for ChatGPT and Codex, independently developed by AGENT OS. It is built for creators who need more than a single generated image: plan a book or collection, keep production decisions visible, validate the work and prepare it for manual publishing review. Kaleidara covers mandala and geometric concepts, printable colouring-page workflows, colour-by-numbers planning, seamless-pattern direction, activity-book concepts and repeatable collections. Its default reverse-page specification pairs a large editorial-style sourced quotation and attribution with eight blank colour-test cubes and pen fields; colour-by-numbers mode requires those labels to match the facing artwork. The repository contains a self-hostable Apps SDK/MCP foundation with five working tools for capability discovery, pre-flight cost estimation, real-provider generation submission, job status polling and cancellation. Credentials remain server-side and requests are validated before billable submission. The live MCP endpoint is not hosted by this repository, and the KDP PDF, cover and book-export engine is a future development track rather than a shipped feature. Kaleidara is transparent about the difference between concept, generated asset, processed artwork, QA-passed output and a file ready for manual KDP review.",
-    "developerName": "AGENT OS",
+    "longDescription": "Kaleidara is a creative publishing workflow for ChatGPT and Codex, independently developed by OpsPocket. It is built for creators who need more than a single generated image: plan a book or collection, keep production decisions visible, validate the work and prepare it for manual publishing review. Kaleidara covers mandala and geometric concepts, printable colouring-page workflows, colour-by-numbers planning, seamless-pattern direction, activity-book concepts and repeatable collections. Its default reverse-page specification pairs a large editorial-style sourced quotation and attribution with eight blank colour-test cubes and pen fields; colour-by-numbers mode requires those labels to match the facing artwork. The repository contains a self-hostable Apps SDK/MCP foundation with five working tools for capability discovery, pre-flight cost estimation, real-provider generation submission, job status polling and cancellation. Credentials remain server-side and requests are validated before billable submission. The live MCP endpoint is not hosted by this repository, and the KDP PDF, cover and book-export engine is a future development track rather than a shipped feature. Kaleidara is transparent about the difference between concept, generated asset, processed artwork, QA-passed output and a file ready for manual KDP review.",
+    "developerName": "OpsPocket",
     "category": "Design & Creativity",
     "capabilities": ["Interactive", "Read", "Write"],
     "websiteURL": "https://github.com/findgriff/kaleidara",

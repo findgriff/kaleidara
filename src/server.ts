@@ -38,7 +38,7 @@ function errorResult(error: unknown) {
   return { isError: true, content: [{ type: "text", text: message }], structuredContent: { error: message }, _meta: meta };
 }
 function createAppServer() {
-  const server = new Server({ name: "kaleidara", version: "0.2.0" }, { capabilities: { resources: {}, tools: {} } });
+  const server = new Server({ name: "kaleidara", version: "0.2.1" }, { capabilities: { resources: {}, tools: {} } });
   server.setRequestHandler(ListResourcesRequestSchema, async () => ({ resources: [{ uri: WIDGET_URI, name: "Kaleidara", description: "Create, colour and publish print-ready artwork", mimeType: "text/html+skybridge", _meta: meta }] }));
   server.setRequestHandler(ReadResourceRequestSchema, async () => ({ contents: [{ uri: WIDGET_URI, mimeType: "text/html+skybridge", text: widgetHtml(), _meta: meta }] }));
   server.setRequestHandler(ListToolsRequestSchema, async () => ({ tools }));
@@ -64,4 +64,4 @@ function cors(res: ServerResponse) { res.setHeader("Access-Control-Allow-Origin"
 async function sse(res: ServerResponse) { cors(res); const server = createAppServer(); const transport = new SSEServerTransport("/mcp/messages", res); const id = transport.sessionId; sessions.set(id, { server, transport }); transport.onclose = async () => { sessions.delete(id); await server.close(); }; await server.connect(transport); }
 async function message(req: IncomingMessage, res: ServerResponse, sessionId: string | null) { cors(res); const session = sessionId && sessions.get(sessionId); if (!session) { res.writeHead(404).end("Unknown session"); return; } await session.transport.handlePostMessage(req, res); }
 const httpServer = createServer(async (req, res) => { try { const url = new URL(req.url ?? "/", `http://${req.headers.host ?? "localhost"}`); if (req.method === "OPTIONS") { cors(res); res.writeHead(204, { "Access-Control-Allow-Methods": "GET, POST, OPTIONS" }).end(); return; } if (req.method === "GET" && url.pathname === "/mcp") { await sse(res); return; } if (req.method === "POST" && url.pathname === "/mcp/messages") { await message(req, res, url.searchParams.get("sessionId")); return; } if (req.method === "GET" && url.pathname === "/health") { res.writeHead(200, { "content-type": "application/json" }).end(JSON.stringify({ ok: true, service: "agent-os-creative-studio" })); return; } res.writeHead(404).end("Not Found"); } catch (error) { console.error(error); if (!res.headersSent) res.writeHead(500).end("Internal server error"); } });
-httpServer.listen(config.PORT, config.HOST, () => console.log(`AGENT OS Creative Studio listening on ${config.HOST}:${config.PORT}`));
+httpServer.listen(config.PORT, config.HOST, () => console.log(`OpsPocket Creative Studio listening on ${config.HOST}:${config.PORT}`));

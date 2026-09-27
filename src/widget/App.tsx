@@ -24,7 +24,7 @@ import {
 import { callTool, getHost, isHostAvailable, persistWidgetState, subscribeToGlobals } from "./openai.js";
 
 /**
- * AGENT OS Creative Studio widget.
+ * OpsPocket Creative Studio widget.
  *
  * Data flow: the host seeds `toolOutput` with a `StudioPayload` whenever a tool
  * runs in the conversation; from then on the widget drives itself by calling
@@ -217,7 +217,7 @@ export default function App() {
         <Header />
         <Banner tone="warn" icon="🔌" title="Not connected to ChatGPT">
           <p className="aos-banner__text">
-            This is the AGENT OS Creative Studio widget shell. It needs the ChatGPT Apps SDK host
+            This is the OpsPocket Creative Studio widget shell. It needs the ChatGPT Apps SDK host
             bridge to call tools. Connect the MCP server in ChatGPT developer mode and open the
             studio from a conversation.
           </p>

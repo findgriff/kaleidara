@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "kaleidara",
-  "version": "0.1.1",
-  "description": "Create, colour and publish premium printable artwork from ChatGPT and Codex.",
+  "version": "0.2.0",
+  "description": "Create, colour and publish print-aware colouring books and pattern collections.",
   "author": {
     "name": "AGENT OS",
     "url": "https://github.com/findgriff"
@@ -10,12 +10,12 @@
   "homepage": "https://github.com/findgriff/kaleidara",
   "repository": "https://github.com/findgriff/kaleidara",
   "license": "MIT",
-  "keywords": ["mandalas", "colouring-books", "color-by-numbers", "patterns", "kdp", "print-publishing", "chatgpt-apps", "mcp"],
+  "keywords": ["mandalas", "colouring-books", "color-by-numbers", "patterns", "kdp", "print-publishing", "chatgpt-apps", "mcp", "adult-colouring", "print-ready", "self-hosted"],
   "skills": "./skills/",
   "interface": {
     "displayName": "Kaleidara",
-    "shortDescription": "Create, colour and publish printable artwork",
-    "longDescription": "Kaleidara is a creative publishing workflow for mandalas, colouring pages, colour-by-numbers artwork and seamless patterns. It helps turn concepts into print-aware book assets, with human review and KDP validation built into the workflow.",
+    "shortDescription": "Create, colour and publish print-aware colouring books and pattern collections.",
+    "longDescription": "Kaleidara is a creative publishing workflow for ChatGPT and Codex, independently developed by AGENT OS. It is built for creators who need more than a single generated image: plan a book or collection, keep production decisions visible, validate the work and prepare it for manual publishing review. Kaleidara covers mandala and geometric concepts, printable colouring-page workflows, colour-by-numbers planning, seamless-pattern direction, activity-book concepts and repeatable collections. Its default reverse-page specification pairs a large editorial-style sourced quotation and attribution with eight blank colour-test cubes and pen fields; colour-by-numbers mode requires those labels to match the facing artwork. The repository contains a self-hostable Apps SDK/MCP foundation with five working tools for capability discovery, pre-flight cost estimation, real-provider generation submission, job status polling and cancellation. Credentials remain server-side and requests are validated before billable submission. The live MCP endpoint is not hosted by this repository, and the KDP PDF, cover and book-export engine is a future development track rather than a shipped feature. Kaleidara is transparent about the difference between concept, generated asset, processed artwork, QA-passed output and a file ready for manual KDP review.",
     "developerName": "AGENT OS",
     "category": "Design & Creativity",
     "capabilities": ["Interactive", "Read", "Write"],
@@ -23,9 +23,13 @@
     "composerIcon": "./assets/kaleidara-icon.png",
     "logo": "./assets/kaleidara-icon.png",
     "defaultPrompt": [
-      "Help me create a premium mandala colouring-book concept.",
-      "Turn this artwork brief into a colour-by-numbers production plan.",
-      "Prepare a KDP-ready colouring-book checklist for this project."
+      "I want to publish an adult colouring book of botanical mandalas. Help me plan 30 pages, trim size, paper, bleed and a difficulty curve.",
+      "Turn this artwork brief into a colour-by-numbers production plan, including how the colour key maps to every number.",
+      "Set up the reverse page for this colouring book: a sourced quotation plus eight colour-test cubes with pen fields.",
+      "Estimate what this generation run will cost before I commit any provider credits.",
+      "Help me plan a seamless repeating pattern collection with edge-matched tiles and multi-scale review.",
+      "Run a print QA checklist over this book project and tell me what must be checked before KDP Print Previewer.",
+      "What can Kaleidara do right now without a connected media provider?"
     ],
     "brandColor": "#46D7C0"
   }

@@ -1,6 +1,6 @@
 {
-  "name": "agent-os-creative-studio",
-  "version": "1.0.0",
+  "name": "kaleidara",
+  "version": "0.2.0",
   "type": "module",
   "private": true,
   "description": "Kaleidara — a ChatGPT Apps SDK (MCP) creative publishing studio for real media generation and print-ready books.",

@@ -38,7 +38,7 @@ function errorResult(error: unknown) {
   return { isError: true, content: [{ type: "text", text: message }], structuredContent: { error: message }, _meta: meta };
 }
 function createAppServer() {
-  const server = new Server({ name: "agent-os-creative-studio", version: "1.0.0" }, { capabilities: { resources: {}, tools: {} } });
+  const server = new Server({ name: "kaleidara", version: "0.2.0" }, { capabilities: { resources: {}, tools: {} } });
   server.setRequestHandler(ListResourcesRequestSchema, async () => ({ resources: [{ uri: WIDGET_URI, name: "Kaleidara", description: "Create, colour and publish print-ready artwork", mimeType: "text/html+skybridge", _meta: meta }] }));
   server.setRequestHandler(ReadResourceRequestSchema, async () => ({ contents: [{ uri: WIDGET_URI, mimeType: "text/html+skybridge", text: widgetHtml(), _meta: meta }] }));
   server.setRequestHandler(ListToolsRequestSchema, async () => ({ tools }));

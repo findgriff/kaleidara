@@ -36,7 +36,7 @@ export const HIGGSFIELD_MODELS: readonly HiggsfieldModel[] = [
     description:
       "General-purpose text-to-image model. Strong at photographic and editorial looks; the studio default for stills.",
     mediaType: "image",
-    aspectRatios: ["1:1", "4:3", "3:4", "16:9", "9:16"],
+    aspectRatios: ["1:1", "4:3", "3:4", "2:3", "16:9", "9:16"],
     resolutions: ["720p", "1080p", "1440p", "2160p"],
     durationsSeconds: [],
     maxReferenceUrls: 3,
@@ -58,7 +58,7 @@ export const HIGGSFIELD_MODELS: readonly HiggsfieldModel[] = [
     description:
       "Image model tuned for identity consistency across a set. Requires at least one reference URL to anchor the subject.",
     mediaType: "image",
-    aspectRatios: ["1:1", "4:3", "3:4", "16:9", "9:16"],
+    aspectRatios: ["1:1", "4:3", "3:4", "2:3", "16:9", "9:16"],
     resolutions: ["720p", "1080p", "1440p"],
     durationsSeconds: [],
     maxReferenceUrls: 4,

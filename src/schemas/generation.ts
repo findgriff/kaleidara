@@ -12,7 +12,7 @@ import { z } from "zod";
 export const MediaTypeSchema = z.enum(["image", "video"]);
 export type MediaType = z.infer<typeof MediaTypeSchema>;
 
-export const AspectRatioSchema = z.enum(["1:1", "4:3", "3:4", "16:9", "9:16", "21:9"]);
+export const AspectRatioSchema = z.enum(["1:1", "4:3", "3:4", "2:3", "16:9", "9:16", "21:9"]);
 export type AspectRatio = z.infer<typeof AspectRatioSchema>;
 
 export const ResolutionSchema = z.enum(["480p", "720p", "1080p", "1440p", "2160p"]);

@@ -38,6 +38,8 @@ The current Apps SDK server exposes:
 - `list_capabilities` — show configured real providers and models.
 - `estimate_generation` — price a request before any paid submission.
 - `generate_media` — submit a real image or video job.
+- `create_book_cover` — submit a branded, print-aware 2:3 front-cover job at high resolution.
+- `create_color_by_numbers_set` — submit 2–4 distinct subject variations with natural or deliberately psychedelic palette rules and numbered-region requirements.
 - `get_generation_status` — poll the provider and retrieve real assets.
 - `cancel_generation` — cancel an active provider job where supported.
 

@@ -34,6 +34,8 @@ Use large square swatches, not narrow lines. Keep the quotation visually dominan
 The default example is Emily Dickinson's public-domain poem excerpt, but the production library should rotate through verified historical figures and artists rather than repeating one author.
 ## Specialist modes
 
+- **Front cover:** `create_book_cover` builds a 2:3, high-resolution KDP front-cover brief with the book title, optional subtitle/author line, Kaleidara branding, subject relevance, thumbnail legibility, print-safe composition and a selected natural, psychedelic or DMT-inspired palette direction. It submits a real provider job; it does not fabricate a finished cover when no provider is configured.
+- **Colour-by-numbers set:** `create_color_by_numbers_set` creates 2–4 separately prompted pages. Each variation receives a different composition, viewpoint, pose or environment, a controlled palette mode and an explicit numbered-region/key requirement. Natural mode asks for biologically/ecologically plausible colours; psychedelic and DMT-inspired modes deliberately loosen that rule while preserving recognisable subjects.
 - **Mandala:** radial symmetry, segment count, line weight, complexity and circular page composition.
 - **Colouring page:** black-and-white line-art, clean enclosed regions, printable line weight and no grey background.
 - **Colour-by-numbers:** deterministic region IDs, palette key, readable labels and a reject gate for tiny or unnumbered regions.

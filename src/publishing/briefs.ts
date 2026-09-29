@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { ReferenceUrlSchema, ResolutionSchema, ModelIdSchema, ProviderIdSchema, type GenerateMediaInput } from "../schemas/generation.js";
+import { coverCopyBlock, validateKdpMetadata } from "./kdp.js";
 
 export const PaletteModeSchema = z.enum(["natural", "psychedelic", "dmt-inspired"]);
 export type PaletteMode = z.infer<typeof PaletteModeSchema>;
@@ -13,16 +14,28 @@ const sharedPublishingShape = {
   maxCredits: z.number().positive().max(100_000).optional(),
 } as const;
 
-export const CreateBookCoverInputSchema = z.object({
+const CreateBookCoverObject = z.object({
   title: z.string().trim().min(1).max(120),
   subject: z.string().trim().min(3).max(160),
   subtitle: z.string().trim().max(160).optional(),
+  series: z.string().trim().max(120).optional(),
   authorLine: z.string().trim().max(120).optional(),
   brandName: z.string().trim().min(1).max(60).default("Kaleidara"),
   paletteMode: PaletteModeSchema.default("natural"),
   ...sharedPublishingShape,
 }).strict();
-export type CreateBookCoverInput = z.infer<typeof CreateBookCoverInputSchema>;
+
+export const CreateBookCoverInputSchema = CreateBookCoverObject.superRefine((value, ctx) => {
+  // KDP cross-checks the words printed on the cover against the Title and
+  // Subtitle fields. Refusing an invalid pair here is what stops the cover
+  // artwork and the dashboard metadata from drifting apart.
+  const validation = validateKdpMetadata({ title: value.title, subtitle: value.subtitle });
+  for (const issue of validation.issues) {
+    if (issue.severity !== "error") continue;
+    ctx.addIssue({ code: z.ZodIssueCode.custom, path: [issue.field === "subtitle" ? "subtitle" : "title"], message: `KDP metadata ${issue.code}: ${issue.message}` });
+  }
+});
+export type CreateBookCoverInput = z.infer<typeof CreateBookCoverObject>;
 
 export const CreateColorByNumbersSetInputSchema = z.object({
   bookTitle: z.string().trim().max(120).optional(),
@@ -48,16 +61,19 @@ export function paletteDirection(mode: PaletteMode): string {
 }
 
 export function buildBookCoverPrompt(input: CreateBookCoverInput): string {
-  const subtitle = input.subtitle ? ` Subtitle text: “${input.subtitle}”.` : "";
-  const author = input.authorLine ? ` Author line: “${input.authorLine}”.` : "";
+  const copyLines = coverCopyBlock({ title: input.title, subtitle: input.subtitle, brandName: input.brandName, authorLine: input.authorLine })
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean);
   return [
     "Create a premium Amazon KDP front cover only for a high-quality colouring book.",
-    `Book title: “${input.title}”.${subtitle}${author}`,
     `Core subject: ${input.subject}.`,
-    `Brand the cover with the exact name “${input.brandName}”, elegantly integrated but subordinate to the title.`,
-    `Use a vivid, highly polished, commercially legible cover composition with ${paletteDirection(input.paletteMode)}.`,
-    "Make the cover clearly relevant to the subject, visually rich at thumbnail size, print-safe, sharp, and suitable for a professional 2:3 KDP cover layout.",
-    "No mockup, no phone, no hands holding a book, no watermark, no illegible pseudo-text, no unrelated objects, no copied artist style.",
+    `Cover artwork composition using ${paletteDirection(input.paletteMode)}.`,
+    `This exact text must appear on the cover, spelled correctly with exactly this capitalisation, and no other words: ${copyLines.map((line) => `“${line}”`).join(", ")}.`,
+    `Typography hierarchy: the book title is the largest element and must stay legible at 100 pixels of thumbnail width; the brand name “${input.brandName}” is smaller, elegantly integrated and never dominant; the supporting lines are subordinate and set in no more than two lines each.`,
+    "Reserve clean, uncluttered areas behind every line of lettering, keep all text well inside the KDP safe zone with generous margins, and avoid overlapping busy artwork.",
+    "Print-safe, sharp, vivid, visually rich and clearly relevant to the subject, composed for a professional 2:3 portrait KDP cover.",
+    "No mockup, no phone, no hands holding a book, no watermark, no pseudo-text, no invented words, no extra text, no unrelated objects, no copied artist style.",
   ].join(" ");
 }
 
@@ -86,7 +102,7 @@ export function buildColorByNumbersPrompts(input: CreateColorByNumbersSetInput):
 export function coverGenerationRequest(input: CreateBookCoverInput): GenerateMediaInput {
   return {
     prompt: buildBookCoverPrompt(input),
-    negativePrompt: "blurry, low resolution, cropped subject, illegible text, misspelled text, watermark, mockup, duplicate subject, extra limbs, malformed anatomy",
+    negativePrompt: "blurry, low resolution, cropped subject, illegible text, misspelled text, garbled lettering, invented words, extra text, text overlapping busy artwork, text outside the safe zone, watermark, mockup, duplicate subject, extra limbs, malformed anatomy",
     mediaType: "image",
     providerId: input.providerId,
     modelId: input.modelId,

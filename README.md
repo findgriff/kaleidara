@@ -38,12 +38,14 @@ The current Apps SDK server exposes:
 - `list_capabilities` — show configured real providers and models.
 - `estimate_generation` — price a request before any paid submission.
 - `generate_media` — submit a real image or video job.
-- `create_book_cover` — submit a branded, print-aware 2:3 front-cover job at high resolution.
+- `create_book_title` — build a validated Amazon KDP title package: title, subtitle, series, the exact cover-copy block and seven backend keyword strings.
+- `validate_kdp_metadata` — check any title, subtitle and keyword set against the KDP rules that cause rejection or listing suppression.
+- `create_book_cover` — submit a branded, print-aware 2:3 front-cover job at high resolution, built from the locked and validated metadata.
 - `create_color_by_numbers_set` — submit 2–4 distinct subject variations with natural or deliberately psychedelic palette rules and numbered-region requirements.
 - `get_generation_status` — poll the provider and retrieve real assets.
 - `cancel_generation` — cancel an active provider job where supported.
 
-The specialist publishing layer is the next development track:
+The specialist interior-production layer is the next development track:
 
 - `create_mandala`
 - `create_coloring_page`
@@ -54,6 +56,24 @@ The specialist publishing layer is the next development track:
 - `build_kdp_cover`
 - `validate_kdp_files`
 - `export_book_package`
+
+## KDP metadata: the rule that rejects most colouring books
+
+Amazon KDP cross-checks the words printed on a book cover against the Title and Subtitle fields in the dashboard. Verbatim from KDP's Metadata Guidelines:
+
+> *For print books, your title must be listed on the cover (on the spine or front cover). It must also match the metadata you entered during title setup.*
+
+A mismatch is the single most common *silent* rejection and can suppress the listing. `create_book_title` therefore exists to be run **before** any artwork, and `create_book_cover` refuses to build a brief from metadata that breaches the rules. The cover prompt is generated from the validated package, and the response returns `kdpMetadata.coverCopyMustMatchExactly` — the only text permitted on the artwork.
+
+Enforced rules:
+
+- Title and subtitle together must be **fewer than 200 characters**.
+- No word may appear more than twice in a title, except articles, conjunctions and prepositions.
+- No sales-rank or ranking claims (`bestseller`, `#1`, `award-winning`), promotional wording (`free`, `on sale`), recency claims, HTML, generic keyword stuffing, or references to other authors and titles.
+- Placeholder titles such as `untitled` are rejected outright.
+- Backend keywords: **7 slots, 50 characters each**, scored so that slots are not wasted on words the title and subtitle already index.
+
+The subtitle builder adds segments in priority order — design count, category keyword, difficulty range, bleed-through guarantee, benefit stack, audience, gift angle, tool compatibility — and reports honestly which segments it had to drop for length rather than silently truncating.
 
 ## Product principles
 
@@ -93,7 +113,7 @@ Kaleidara server
 
 ## Current implementation status
 
-The ChatGPT app foundation is complete and verified. The first publishing-specific modules are planned but are not represented as finished until they are built and tested against real output.
+The ChatGPT app foundation and the KDP metadata engine are complete and verified. The interior-production modules remain planned and are not represented as finished until they are built and tested against real output.
 
 Verified commands:
 
@@ -103,7 +123,9 @@ npm test
 npm run build
 ```
 
-Current test result: 5 tests passing. The build produces the embedded widget at `assets/creative-studio.html`.
+Current test result: 18 tests passing, covering generation validation, the publishing briefs, the KDP metadata engine and secret handling. The build produces the embedded widget at `assets/creative-studio.html`.
+
+The MCP tool surface has been verified over the wire: a handshake against the built server lists all nine tools, and `create_book_title` and `validate_kdp_metadata` return real structured results over the SSE transport.
 
 ## Install as an OpenAI/Codex plugin marketplace
 

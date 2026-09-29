@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "kaleidara",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Create, colour and publish print-aware colouring books and pattern collections.",
   "author": {
     "name": "OpsPocket",
@@ -27,7 +27,7 @@
   "interface": {
     "displayName": "Kaleidara",
     "shortDescription": "Create, colour and publish print-aware colouring books and pattern collections.",
-    "longDescription": "Kaleidara is an OpsPocket creative publishing workflow for ChatGPT and Codex. Plan mandalas, colouring pages, colour-by-numbers books, pattern collections and relevant book covers with visible production decisions, sourced inspiration, print-aware checks and clear output states. The repository includes create_book_cover for a branded, high-resolution 2:3 front-cover generation brief with title hierarchy, subject relevance and natural, psychedelic or DMT-inspired palette direction. It also includes create_color_by_numbers_set for 2–4 deliberately different compositions, with distinct poses, viewpoints or environments, natural colour logic for real creatures and objects, or controlled psychedelic/DMT-inspired palettes, plus numbered-region and matching-key requirements. The reverse-page specification includes a large sourced quotation block and eight colour-test cubes. The self-hostable Apps SDK/MCP foundation validates requests, estimates billable cost, submits real provider jobs, polls status and supports cancellation. Provider credentials remain server-side. The live MCP endpoint is not hosted by this repository, and final KDP PDF, spine, deterministic segmentation and book-export work still require separate implementation and visual QA.",
+    "longDescription": "Kaleidara is an OpsPocket creative publishing workflow for ChatGPT and Codex. Plan mandalas, colouring pages, colour-by-numbers books, pattern collections and relevant book covers with visible production decisions, sourced inspiration, print-aware checks and clear output states. The repository includes create_book_cover for a branded, high-resolution 2:3 front-cover generation brief with title hierarchy, subject relevance and natural, psychedelic or DMT-inspired palette direction. It also includes create_color_by_numbers_set for 2–4 deliberately different compositions, with distinct poses, viewpoints or environments, natural colour logic for real creatures and objects, or controlled psychedelic/DMT-inspired palettes, plus numbered-region and matching-key requirements. The reverse-page specification includes a large sourced quotation block and eight colour-test cubes. The self-hostable Apps SDK/MCP foundation validates requests, estimates billable cost, submits real provider jobs, polls status and supports cancellation. Provider credentials remain server-side. The live MCP endpoint is not hosted by this repository, and final KDP PDF, spine, deterministic segmentation and book-export work still require separate implementation and visual QA. It also contains a KDP metadata engine: create_book_title builds and validates the Amazon KDP title, subtitle, series, cover-copy block and seven backend keyword strings before any artwork exists, and validate_kdp_metadata enforces KDP's 200-character combined limit, the no-word-more-than-twice rule, the prohibited-term list and the keyword slot limits. The cover can never drift from the dashboard metadata, because KDP cross-checks the words printed on a cover against the Title and Subtitle fields, and a mismatch is the most common silent rejection.",
     "developerName": "OpsPocket",
     "category": "Design & Creativity",
     "capabilities": [
@@ -39,6 +39,7 @@
     "composerIcon": "./assets/kaleidara-icon.png",
     "logo": "./assets/kaleidara-icon.png",
     "defaultPrompt": [
+      "Lock the KDP title and subtitle for my mandala colouring book, then list the exact cover text and the 7 backend keyword strings.",
       "Create a premium Kaleidara front cover for a lizards colour-by-numbers book, with a relevant subject, 2:3 KDP composition and natural colours.",
       "Create four distinct colour-by-numbers lizard pages with different poses and habitats, biologically sensible colours and matching numbered keys.",
       "Turn this artwork brief into a colour-by-numbers production plan, including how the colour key maps to every number.",

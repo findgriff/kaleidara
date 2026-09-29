@@ -9,6 +9,7 @@ import { parseEnv, getConfig, parseAllowedOrigins } from "./config/env.js";
 import { StudioService } from "./studio/service.js";
 import { EstimateGenerationInputSchema, GenerateMediaInputSchema, ListCapabilitiesInputSchema, GetGenerationStatusInputSchema, CancelGenerationInputSchema } from "./schemas/generation.js";
 import { CreateBookCoverInputSchema, CreateColorByNumbersSetInputSchema, buildColorByNumbersPrompts, coverGenerationRequest } from "./publishing/briefs.js";
+import { buildTitlePackage, coverCopyBlock, validateKdpMetadata, validateKeywords } from "./publishing/kdp.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
 const ASSET = path.join(ROOT, "assets", "creative-studio.html");
@@ -27,8 +28,10 @@ const tools: any[] = [
   { name: "list_capabilities", title: "List Creative Studio capabilities", description: "List configured real media providers and available image/video models.", inputSchema: { type: "object", properties: { mediaType: { type: "string", enum: ["image", "video"] }, providerId: { type: "string" } }, additionalProperties: false }, _meta: meta },
   { name: "estimate_generation", title: "Estimate generation", description: "Estimate credits and time before a paid generation request.", inputSchema: { type: "object", properties: { prompt: { type: "string" }, negativePrompt: { type: "string" }, mediaType: { type: "string", enum: ["image", "video"] }, providerId: { type: "string" }, modelId: { type: "string" }, aspectRatio: { type: "string" }, resolution: { type: "string" }, durationSeconds: { type: "number" }, referenceUrls: { type: "array", items: { type: "string" } }, seed: { type: "number" }, quantity: { type: "number" } }, required: ["prompt"], additionalProperties: false }, _meta: meta },
   { name: "generate_media", title: "Generate media", description: "Submit a real image or video generation job. This may incur provider charges.", inputSchema: { type: "object", properties: { prompt: { type: "string" }, negativePrompt: { type: "string" }, mediaType: { type: "string", enum: ["image", "video"] }, providerId: { type: "string" }, modelId: { type: "string" }, aspectRatio: { type: "string" }, resolution: { type: "string" }, durationSeconds: { type: "number" }, referenceUrls: { type: "array", items: { type: "string" } }, seed: { type: "number" }, quantity: { type: "number" }, maxCredits: { type: "number" } }, required: ["prompt"], additionalProperties: false }, _meta: meta },
-  { name: "create_book_cover", title: "Create a KDP book cover", description: "Build and submit a print-aware 2:3 front-cover generation brief with Kaleidara branding, title hierarchy, subject relevance and high-resolution requirements.", inputSchema: { type: "object", properties: { title: { type: "string" }, subject: { type: "string" }, subtitle: { type: "string" }, authorLine: { type: "string" }, brandName: { type: "string" }, paletteMode: { type: "string", enum: ["natural", "psychedelic", "dmt-inspired"] }, providerId: { type: "string" }, modelId: { type: "string" }, resolution: { type: "string" }, referenceUrls: { type: "array", items: { type: "string" } }, seed: { type: "number" }, maxCredits: { type: "number" } }, required: ["title", "subject"], additionalProperties: false }, _meta: meta },
+  { name: "create_book_cover", title: "Create a KDP book cover", description: "Build and submit a print-aware 2:3 front-cover generation brief with Kaleidara branding, title hierarchy, subject relevance and high-resolution requirements. The title and subtitle are validated against the Amazon KDP metadata rules first, and the response returns the exact cover text that must be printed so the artwork and the dashboard fields cannot drift apart.", inputSchema: { type: "object", properties: { title: { type: "string" }, subject: { type: "string" }, subtitle: { type: "string" }, series: { type: "string" }, authorLine: { type: "string" }, brandName: { type: "string" }, paletteMode: { type: "string", enum: ["natural", "psychedelic", "dmt-inspired"] }, providerId: { type: "string" }, modelId: { type: "string" }, resolution: { type: "string" }, referenceUrls: { type: "array", items: { type: "string" } }, seed: { type: "number" }, maxCredits: { type: "number" } }, required: ["title", "subject"], additionalProperties: false }, _meta: meta },
   { name: "create_color_by_numbers_set", title: "Create distinct colour-by-numbers pages", description: "Generate a set of intentionally different colour-by-numbers compositions with a natural, psychedelic or DMT-inspired palette mode and matching numbered colour-key requirements.", inputSchema: { type: "object", properties: { bookTitle: { type: "string" }, subject: { type: "string" }, quantity: { type: "number" }, paletteMode: { type: "string", enum: ["natural", "psychedelic", "dmt-inspired"] }, paletteSize: { type: "number" }, resolution: { type: "string" }, providerId: { type: "string" }, modelId: { type: "string" }, referenceUrls: { type: "array", items: { type: "string" } }, seed: { type: "number" }, maxCredits: { type: "number" } }, required: ["subject"], additionalProperties: false }, _meta: meta },
+  { name: "create_book_title", title: "Create a validated KDP title package", description: "Build the Amazon KDP title, subtitle, series, cover-copy block and 7 backend keyword strings for a colouring book. Enforces the 200-character title-plus-subtitle limit, the no-word-more-than-twice rule and KDP's prohibited-term list, and reports any subtitle segment it had to drop.", inputSchema: { type: "object", properties: { theme: { type: "string", enum: ["mandala", "floral", "geometric", "nature", "animal", "celtic", "seasonal", "abstract"] }, format: { type: "string", enum: ["coloring-book", "color-by-numbers", "activity-book", "pattern-collection"] }, audience: { type: "string", enum: ["women", "women-teens", "teens", "everyone"] }, designCount: { type: "number" }, difficulty: { type: "string", enum: ["simple", "simple-to-intricate", "advanced"] }, brandName: { type: "string" }, seriesName: { type: "string" }, authorLine: { type: "string" }, hook: { type: "string" }, mood: { type: "string", enum: ["calm-water", "luminous", "botanical", "dusk-night", "cosmic", "any"] }, positioning: { type: "string", enum: ["brand-hook", "audience-led", "spec-led", "gift-led", "difficulty-led"] }, singleSided: { type: "boolean" }, trimSize: { type: "string" }, giftAngle: { type: "boolean" }, maxHeadroom: { type: "number" } }, additionalProperties: false }, _meta: meta },
+  { name: "validate_kdp_metadata", title: "Validate KDP metadata", description: "Check a title and subtitle pair, and any backend keyword strings, against the Amazon KDP metadata rules that cause rejection or listing suppression. Use this before uploading, because KDP cross-checks the words printed on a cover against the Title and Subtitle fields.", inputSchema: { type: "object", properties: { title: { type: "string" }, subtitle: { type: "string" }, keywords: { type: "array", items: { type: "string" } } }, required: ["title"], additionalProperties: false }, _meta: meta },
   { name: "get_generation_status", title: "Get generation status", description: "Poll a submitted generation job and return real provider status and assets.", inputSchema: { type: "object", properties: { jobId: { type: "string" } }, required: ["jobId"], additionalProperties: false }, _meta: meta },
   { name: "cancel_generation", title: "Cancel generation", description: "Cancel an active generation job upstream where supported.", inputSchema: { type: "object", properties: { jobId: { type: "string" }, reason: { type: "string" } }, required: ["jobId"], additionalProperties: false }, _meta: meta },
 ];
@@ -41,7 +44,7 @@ function errorResult(error: unknown) {
   return { isError: true, content: [{ type: "text", text: message }], structuredContent: { error: message }, _meta: meta };
 }
 function createAppServer() {
-  const server = new Server({ name: "kaleidara", version: "0.3.0" }, { capabilities: { resources: {}, tools: {} } });
+  const server = new Server({ name: "kaleidara", version: "0.4.0" }, { capabilities: { resources: {}, tools: {} } });
   server.setRequestHandler(ListResourcesRequestSchema, async () => ({ resources: [{ uri: WIDGET_URI, name: "Kaleidara", description: "Create, colour and publish print-ready artwork", mimeType: "text/html+skybridge", _meta: meta }] }));
   server.setRequestHandler(ReadResourceRequestSchema, async () => ({ contents: [{ uri: WIDGET_URI, mimeType: "text/html+skybridge", text: widgetHtml(), _meta: meta }] }));
   server.setRequestHandler(ListToolsRequestSchema, async () => ({ tools }));
@@ -54,7 +57,32 @@ function createAppServer() {
       if (name === "generate_media") return result(await service.generate(GenerateMediaInputSchema.parse(args)), "Generation job submitted");
       if (name === "create_book_cover") {
         const input = CreateBookCoverInputSchema.parse(args);
-        return result({ kind: "book_cover", brief: input, job: await service.generate(coverGenerationRequest(input)) }, "Book-cover generation job submitted");
+        const validation = validateKdpMetadata({ title: input.title, subtitle: input.subtitle });
+        const copyBlock = coverCopyBlock({ title: input.title, subtitle: input.subtitle, brandName: input.brandName, authorLine: input.authorLine });
+        return result({
+          kind: "book_cover",
+          brief: input,
+          kdpMetadata: {
+            title: input.title,
+            subtitle: input.subtitle ?? null,
+            series: input.series ?? null,
+            coverCopyMustMatchExactly: copyBlock,
+            characters: { title: validation.titleChars, subtitle: validation.subtitleChars, combined: validation.combinedChars, limit: validation.combinedLimit, headroom: validation.headroom },
+            warnings: validation.issues.filter((issue) => issue.severity === "warning"),
+          },
+          job: await service.generate(coverGenerationRequest(input)),
+        }, "Book-cover generation job submitted");
+      }
+      if (name === "create_book_title") {
+        const pkg = buildTitlePackage(args as any);
+        return result({ kind: "title_package", ...pkg }, pkg.validation.valid ? "KDP title package ready" : "KDP title package has validation errors");
+      }
+      if (name === "validate_kdp_metadata") {
+        const title = typeof args.title === "string" ? args.title : "";
+        const subtitle = typeof args.subtitle === "string" ? args.subtitle : undefined;
+        const keywords = Array.isArray(args.keywords) ? args.keywords.filter((entry): entry is string => typeof entry === "string") : [];
+        const validation = validateKdpMetadata({ title, subtitle });
+        return result({ kind: "kdp_validation", validation, keywordIssues: validateKeywords(keywords, { title, subtitle }) }, validation.valid ? "KDP metadata valid" : "KDP metadata has errors");
       }
       if (name === "create_color_by_numbers_set") {
         const input = CreateColorByNumbersSetInputSchema.parse(args);

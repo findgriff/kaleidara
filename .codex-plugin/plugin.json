@@ -1,6 +1,6 @@
 {
   "name": "kaleidara",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Create, colour and publish print-aware colouring books and pattern collections.",
   "author": {
     "name": "OpsPocket",
@@ -23,7 +23,7 @@
   "interface": {
     "displayName": "Kaleidara",
     "shortDescription": "Create, colour and publish print-aware colouring books and pattern collections.",
-    "longDescription": "Kaleidara is an OpsPocket creative publishing workflow for ChatGPT and Codex. Plan mandalas, colouring pages, colour-by-numbers books, pattern collections and relevant book covers with visible production decisions, sourced inspiration, print-aware checks and clear output states. New workflows include create_book_cover for a branded, high-resolution 2:3 front-cover brief, and create_color_by_numbers_set for 2–4 deliberately different subject compositions with natural or psychedelic/DMT-inspired palette rules and numbered-region requirements. The package includes the reverse-page specification with a large quotation block and eight colour-test cubes. The repository contains a self-hostable Apps SDK/MCP foundation for capability discovery, cost estimation, real-provider generation, status polling and cancellation. A live provider endpoint and final KDP PDF, spine, deterministic segmentation and book-export engine still require separate configuration or implementation; this plugin does not pretend those services are hosted or finished.",
+    "longDescription": "Kaleidara is an OpsPocket creative publishing workflow for ChatGPT and Codex. Plan mandalas, colouring pages, colour-by-numbers books, pattern collections and relevant book covers with visible production decisions, sourced inspiration, print-aware checks and clear output states. New workflows include create_book_cover for a branded, high-resolution 2:3 front-cover brief, and create_color_by_numbers_set for 2–4 deliberately different subject compositions with natural or psychedelic/DMT-inspired palette rules and numbered-region requirements. The package includes the reverse-page specification with a large quotation block and eight colour-test cubes. The repository contains a self-hostable Apps SDK/MCP foundation for capability discovery, cost estimation, real-provider generation, status polling and cancellation. A live provider endpoint and final KDP PDF, spine, deterministic segmentation and book-export engine still require separate configuration or implementation; this plugin does not pretend those services are hosted or finished. It also contains a KDP metadata engine: create_book_title builds and validates the Amazon KDP title, subtitle, series, cover-copy block and seven backend keyword strings before any artwork exists, and validate_kdp_metadata enforces KDP's 200-character combined limit, the no-word-more-than-twice rule, the prohibited-term list and the keyword slot limits. The cover can never drift from the dashboard metadata, because KDP cross-checks the words printed on a cover against the Title and Subtitle fields, and a mismatch is the most common silent rejection.",
     "developerName": "OpsPocket",
     "category": "Design & Creativity",
     "capabilities": [
@@ -36,6 +36,7 @@
     "logo": "./assets/kaleidara-icon.png",
     "composerIcon": "./assets/kaleidara-icon.png",
     "defaultPrompt": [
+      "Lock the KDP title and subtitle for my mandala colouring book, then list the exact cover text and the 7 backend keyword strings.",
       "Create a premium front cover for a lizards colour-by-numbers book with Kaleidara branding and a 2:3 KDP composition.",
       "Create four distinct colour-by-numbers lizard pages with different compositions and a matching numbered palette key.",
       "Create a sourced inspirational reverse-page brief with eight colour cubes.",

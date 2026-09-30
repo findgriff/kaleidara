@@ -42,6 +42,7 @@ The current Apps SDK server exposes:
 - `validate_kdp_metadata` — check any title, subtitle and keyword set against the KDP rules that cause rejection or listing suppression.
 - `create_book_cover` — submit a branded, print-aware 2:3 front-cover job at high resolution, built from the locked and validated metadata.
 - `create_color_by_numbers_set` — submit 2–4 distinct subject variations with natural or deliberately psychedelic palette rules and numbered-region requirements.
+- `build_subject_fact_reverse_pages` — build subject-specific reverse pages with a different, source-backed fact matched to each page, with no quotations and the eight numbered swatches retained.
 - `get_generation_status` — poll the provider and retrieve real assets.
 - `cancel_generation` — cancel an active provider job where supported.
 
@@ -188,7 +189,7 @@ Kaleidara will create production files for manual upload to Amazon KDP rather th
 - ZIP export.
 - Machine-readable QA report.
 
-The default reverse-page template is stored at `templates/reverse-page-template.json`. It places the artwork on the front and, on the reverse, a large styled sourced quotation plus eight large blank colour cubes with pen/colour fields. Colour-by-numbers mode requires cube labels to match every number in the facing artwork.
+The default reverse-page template is stored at `templates/reverse-page-template.json`. It now selects subject-fact mode for specific-subject books: the reverse page carries a short, interesting, source-backed fact matched to the facing species or subject, with no quotation. General collections may still use a sourced quotation. Both modes retain eight large numbered colour swatches with Pen / colour fields, and colour-by-numbers mode requires the swatch labels to match every number in the facing artwork.
 
 Amazon KDP Print Previewer remains the final publishing authority. Generated files must be inspected before upload.
 

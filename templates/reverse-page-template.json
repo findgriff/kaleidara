@@ -1,13 +1,46 @@
 {
   "templateId": "kaleidara-reverse-page-v1",
-  "version": "1.0.0",
-  "name": "Kaleidara Inspiration & Palette Reverse Page",
-  "purpose": "The reverse side of every colouring artwork page: a large inspirational quotation followed by blank colour cubes for testing the pens used on the facing artwork.",
+  "version": "1.1.0",
+  "name": "Kaleidara Subject Fact & Palette Reverse Page",
+  "purpose": "The reverse side of every colouring artwork page: a verified subject fact matched to the facing page when the book has a specific subject, or a sourced quotation for general collections, followed by colour swatches for recording the pens used.",
   "pageRole": "reverse-of-artwork",
   "default": true,
+  "contentMode": {
+    "selection": "subject-fact-for-specific-subject-books",
+    "available": ["subject-fact", "quotation"],
+    "subjectFactRule": "Use subject-fact for books about a named subject, species, object, place, culture or historical topic. Use quotation only when the book is not subject-led.",
+    "noQuotationInSubjectFactMode": true,
+    "factEvidenceRequired": true,
+    "factMustMatchFacingPage": true
+  },
   "artworkPage": {
     "printed": false,
     "reason": "Keep the reverse of the artwork blank apart from the palette and inspiration content to reduce marker bleed-through."
+  },
+  "subjectFactBlock": {
+    "position": "upper-half-centred",
+    "heading": "SUBJECT FACT",
+    "subjectLabel": "{subject}",
+    "fact": "{fact}",
+    "fontFamily": "clean-sans-serif",
+    "fontStyle": "normal",
+    "fontSizePt": 16,
+    "lineHeight": 1.3,
+    "maxLines": 8,
+    "alignment": "centre",
+    "sourceNote": {
+      "enabled": true,
+      "fontSizePt": 7,
+      "alignment": "centre",
+      "format": "Source: {sourceTitle} — {sourceUrl}",
+      "requiredFields": ["sourceTitle", "sourceUrl"]
+    },
+    "rules": [
+      "Use the supplied fact exactly as written.",
+      "The fact must describe the species or subject on the facing artwork page.",
+      "Do not add a quotation, quotation marks, historical attribution or unsourced claim.",
+      "Do not reuse the same fact on another page."
+    ]
   },
   "quoteBlock": {
     "position": "upper-half-centred",

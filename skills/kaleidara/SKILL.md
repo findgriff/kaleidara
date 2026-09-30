@@ -21,21 +21,21 @@ Use this workflow for creative publishing projects. Kaleidara is not a licence t
 
 ## Default reverse page
 
-Every colouring-book artwork page uses the versioned layout in `templates/reverse-page-template.json` unless the user selects another template. The artwork front remains clean; the reverse side contains:
+Every colouring-book artwork page uses the versioned layout in `templates/reverse-page-template.json` unless the user selects another template. For general collections the reverse side may contain a sourced quotation. For a specific-subject book, the reverse side switches to a verified subject fact matched to the facing page. The artwork front remains clean; the reverse side contains:
 
-- A large, centred, editorial-style inspirational quotation.
-- The historical figure's name and birth/death years.
-- A source and rights note for the quotation.
-- Eight large, blank colour cubes in a two-column grid.
+- A short, interesting fact about the exact species or subject on the facing page, with source title and HTTPS URL.
+- No quotation, quotation marks or historical attribution in subject-fact mode.
+- Eight large numbered colour cubes in a two-column grid.
 - A `Pen / colour:` field below each cube.
 - Colour-by-numbers mode where cube labels must match every number in the artwork.
 - Black-and-white, non-full-bleed printing to reduce marker bleed-through.
 
-Use large square swatches, not narrow lines. Keep the quotation visually dominant and use an editorial serif italic style with generous spacing. Never publish a quotation without a source and rights status.
+Use large square swatches, not narrow lines. In subject-fact mode, keep the fact visually prominent in a clean sans-serif block with generous spacing. In quotation mode, use an editorial serif italic style. Never publish a fact without its evidence record, and never publish a quotation without a source and rights status.
 
-The default example is Emily Dickinson's public-domain poem excerpt, but the production library should rotate through verified historical figures and artists rather than repeating one author.
+The historical quotation example remains available for general, non-subject collections only; it must never appear in a subject-specific book.
 ## Specialist modes
 
+- **Subject-fact reverse pages:** `build_subject_fact_reverse_pages` is the default reverse-page mode for a specific subject book. Supply one interesting, page-matched fact per species/subject with an HTTPS source title and URL. The plugin keeps the eight numbered colour swatches and `Pen / colour:` fields, but removes all quotations. It rejects duplicate facts, duplicate page numbers, missing evidence and non-HTTPS sources. The fact is printed exactly as supplied; it is never invented or embellished.
 - **KDP title package (do this first):** `create_book_title` builds the Amazon KDP title, subtitle, series, cover-copy block and seven backend keyword strings, and validates them against the rules that cause rejection. Always generate the title *before* generating a cover. Choose a `positioning` of `brand-hook`, `audience-led`, `spec-led`, `gift-led` or `difficulty-led`. Prefer `brand-hook`: it leads with the brand so every impression trains recall and survives search-result truncation, then names the book with an atmospheric hook from the curated library.
 - **KDP metadata check:** `validate_kdp_metadata` tests any title and subtitle pair, plus keyword strings, and reports every problem: the 200-character combined limit, a word used more than twice, prohibited sales-rank or promotional wording, placeholder titles, and keyword slots that waste characters on words the title already indexes.
 - **Front cover:** `create_book_cover` builds a 2:3, high-resolution KDP front-cover brief with the book title, optional subtitle/author line, Kaleidara branding, subject relevance, thumbnail legibility, print-safe composition and a selected natural, psychedelic or DMT-inspired palette direction. It refuses metadata that breaches the KDP rules, and it returns the exact cover text that must be printed. It submits a real provider job; it does not fabricate a finished cover when no provider is configured.

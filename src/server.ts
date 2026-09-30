@@ -10,6 +10,7 @@ import { StudioService } from "./studio/service.js";
 import { EstimateGenerationInputSchema, GenerateMediaInputSchema, ListCapabilitiesInputSchema, GetGenerationStatusInputSchema, CancelGenerationInputSchema } from "./schemas/generation.js";
 import { CreateBookCoverInputSchema, CreateColorByNumbersSetInputSchema, buildColorByNumbersPrompts, coverGenerationRequest } from "./publishing/briefs.js";
 import { buildTitlePackage, coverCopyBlock, validateKdpMetadata, validateKeywords } from "./publishing/kdp.js";
+import { SubjectFactReversePagesInputSchema, buildSubjectFactReversePages } from "./publishing/subject-facts.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
 const ASSET = path.join(ROOT, "assets", "creative-studio.html");
@@ -32,6 +33,7 @@ const tools: any[] = [
   { name: "create_color_by_numbers_set", title: "Create distinct colour-by-numbers pages", description: "Generate a set of intentionally different colour-by-numbers compositions with a natural, psychedelic or DMT-inspired palette mode and matching numbered colour-key requirements.", inputSchema: { type: "object", properties: { bookTitle: { type: "string" }, subject: { type: "string" }, quantity: { type: "number" }, paletteMode: { type: "string", enum: ["natural", "psychedelic", "dmt-inspired"] }, paletteSize: { type: "number" }, resolution: { type: "string" }, providerId: { type: "string" }, modelId: { type: "string" }, referenceUrls: { type: "array", items: { type: "string" } }, seed: { type: "number" }, maxCredits: { type: "number" } }, required: ["subject"], additionalProperties: false }, _meta: meta },
   { name: "create_book_title", title: "Create a validated KDP title package", description: "Build the Amazon KDP title, subtitle, series, cover-copy block and 7 backend keyword strings for a colouring book. Enforces the 200-character title-plus-subtitle limit, the no-word-more-than-twice rule and KDP's prohibited-term list, and reports any subtitle segment it had to drop.", inputSchema: { type: "object", properties: { theme: { type: "string", enum: ["mandala", "floral", "geometric", "nature", "animal", "celtic", "seasonal", "abstract"] }, format: { type: "string", enum: ["coloring-book", "color-by-numbers", "activity-book", "pattern-collection"] }, audience: { type: "string", enum: ["women", "women-teens", "teens", "everyone"] }, designCount: { type: "number" }, difficulty: { type: "string", enum: ["simple", "simple-to-intricate", "advanced"] }, brandName: { type: "string" }, seriesName: { type: "string" }, authorLine: { type: "string" }, hook: { type: "string" }, mood: { type: "string", enum: ["calm-water", "luminous", "botanical", "dusk-night", "cosmic", "any"] }, positioning: { type: "string", enum: ["brand-hook", "audience-led", "spec-led", "gift-led", "difficulty-led"] }, singleSided: { type: "boolean" }, trimSize: { type: "string" }, giftAngle: { type: "boolean" }, maxHeadroom: { type: "number" } }, additionalProperties: false }, _meta: meta },
   { name: "validate_kdp_metadata", title: "Validate KDP metadata", description: "Check a title and subtitle pair, and any backend keyword strings, against the Amazon KDP metadata rules that cause rejection or listing suppression. Use this before uploading, because KDP cross-checks the words printed on a cover against the Title and Subtitle fields.", inputSchema: { type: "object", properties: { title: { type: "string" }, subtitle: { type: "string" }, keywords: { type: "array", items: { type: "string" } } }, required: ["title"], additionalProperties: false }, _meta: meta },
+  { name: "build_subject_fact_reverse_pages", title: "Build verified subject-fact reverse pages", description: "Build reverse pages for a subject-specific colouring book using a different, source-backed fact matched to each page's species or subject. Keeps the eight numbered colour swatches and Pen / colour fields, and prohibits quotations in subject-fact mode.", inputSchema: { type: "object", properties: { bookTitle: { type: "string" }, subjectFamily: { type: "string" }, pages: { type: "array", items: { type: "object", properties: { pageNumber: { type: "number" }, subject: { type: "string" }, fact: { type: "string" }, sourceTitle: { type: "string" }, sourceUrl: { type: "string" }, sourceAccessed: { type: "string" } }, required: ["pageNumber", "subject", "fact", "sourceTitle", "sourceUrl"], additionalProperties: false } }, paletteCubes: { type: "number" }, noQuotations: { type: "boolean" } }, required: ["bookTitle", "subjectFamily", "pages"], additionalProperties: false }, _meta: meta },
   { name: "get_generation_status", title: "Get generation status", description: "Poll a submitted generation job and return real provider status and assets.", inputSchema: { type: "object", properties: { jobId: { type: "string" } }, required: ["jobId"], additionalProperties: false }, _meta: meta },
   { name: "cancel_generation", title: "Cancel generation", description: "Cancel an active generation job upstream where supported.", inputSchema: { type: "object", properties: { jobId: { type: "string" }, reason: { type: "string" } }, required: ["jobId"], additionalProperties: false }, _meta: meta },
 ];
@@ -44,7 +46,7 @@ function errorResult(error: unknown) {
   return { isError: true, content: [{ type: "text", text: message }], structuredContent: { error: message }, _meta: meta };
 }
 function createAppServer() {
-  const server = new Server({ name: "kaleidara", version: "0.4.0" }, { capabilities: { resources: {}, tools: {} } });
+  const server = new Server({ name: "kaleidara", version: "0.5.0" }, { capabilities: { resources: {}, tools: {} } });
   server.setRequestHandler(ListResourcesRequestSchema, async () => ({ resources: [{ uri: WIDGET_URI, name: "Kaleidara", description: "Create, colour and publish print-ready artwork", mimeType: "text/html+skybridge", _meta: meta }] }));
   server.setRequestHandler(ReadResourceRequestSchema, async () => ({ contents: [{ uri: WIDGET_URI, mimeType: "text/html+skybridge", text: widgetHtml(), _meta: meta }] }));
   server.setRequestHandler(ListToolsRequestSchema, async () => ({ tools }));
@@ -101,6 +103,19 @@ function createAppServer() {
           maxCredits: input.maxCredits === undefined ? undefined : input.maxCredits / input.quantity,
         }))));
         return result({ kind: "color_by_numbers_set", brief: input, prompts, jobs }, "Colour-by-numbers generation jobs submitted");
+      }
+      if (name === "build_subject_fact_reverse_pages") {
+        const input = SubjectFactReversePagesInputSchema.parse(args);
+        return result({
+          kind: "subject_fact_reverse_pages",
+          bookTitle: input.bookTitle,
+          subjectFamily: input.subjectFamily,
+          mode: "subject-fact",
+          pages: buildSubjectFactReversePages(input),
+          template: "kaleidara-reverse-page-v1@1.1.0",
+          quotationsIncluded: false,
+          paletteCubes: input.paletteCubes,
+        }, "Verified subject-fact reverse pages ready");
       }
       if (name === "get_generation_status") return result(await service.getStatus(GetGenerationStatusInputSchema.parse(args)), "Generation status loaded");
       if (name === "cancel_generation") return result(await service.cancel(CancelGenerationInputSchema.parse(args)), "Generation cancellation requested");

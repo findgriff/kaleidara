@@ -4,6 +4,7 @@ import { parseEnv } from "../src/config/env.js";
 import { redactSecrets } from "../src/util/redact.js";
 import { buildBookCoverPrompt, buildColorByNumbersPrompts, CreateBookCoverInputSchema } from "../src/publishing/briefs.js";
 import { buildTitlePackage, coverCopyBlock, validateKdpMetadata, validateKeywords, KDP_COMBINED_LIMIT } from "../src/publishing/kdp.js";
+import { SubjectFactReversePagesInputSchema, buildSubjectFactReversePages, subjectFactReversePageTemplate } from "../src/publishing/subject-facts.js";
 
 describe("generation input validation", () => {
   it("rejects an image duration", () => {
@@ -126,6 +127,45 @@ describe("KDP metadata engine", () => {
       series: "Kaleidara Coloring Books",
     });
     expect(parsed.success).toBe(true);
+  });
+});
+
+describe("subject-fact reverse pages", () => {
+  const pages = [
+    { pageNumber: 1, subject: "Leopard gecko", fact: "Leopard geckos can store fat in their tails, which helps them survive when food is scarce.", sourceTitle: "Smithsonian's National Zoo — Leopard Gecko", sourceUrl: "https://nationalzoo.si.edu/animals/leopard-gecko" },
+    { pageNumber: 2, subject: "Veiled chameleon", fact: "A veiled chameleon's independently moving eyes help it watch in different directions at the same time.", sourceTitle: "San Diego Zoo Wildlife Alliance — Chameleon", sourceUrl: "https://animals.sandiegozoo.org/animals/chameleon" },
+  ];
+
+  it("builds one verified, page-matched fact page per subject", () => {
+    const result = buildSubjectFactReversePages({ bookTitle: "Kaleidara Lizards: Color by Numbers", subjectFamily: "lizards", pages, paletteCubes: 8, noQuotations: true });
+    expect(result).toHaveLength(2);
+    expect(result[0]?.mode).toBe("subject-fact");
+    expect(result[0]?.subject).toBe("Leopard gecko");
+    expect(result[0]?.source.url).toMatch(/^https:\/\//);
+    expect(result[0]?.palette.cubes).toBe(8);
+    expect(result[0]?.palette.penFieldLabel).toBe("Pen / colour:");
+    expect(result[0]?.contentRules.join(" ")).toContain("Do not display quotations");
+    expect(result[0]?.contentRules.join(" ")).toContain("supplied fact exactly as written");
+  });
+
+  it("rejects duplicate facts and duplicate page numbers", () => {
+    const parsed = SubjectFactReversePagesInputSchema.safeParse({ bookTitle: "Lizards", subjectFamily: "lizards", pages: [pages[0], { ...pages[0], pageNumber: 1, subject: "Another lizard" }], noQuotations: true });
+    expect(parsed.success).toBe(false);
+  });
+
+  it("rejects non-HTTPS evidence and quotation mode", () => {
+    expect(SubjectFactReversePagesInputSchema.safeParse({ bookTitle: "Lizards", subjectFamily: "lizards", pages: [{ ...pages[0], sourceUrl: "http://example.com/fact" }], noQuotations: true }).success).toBe(false);
+    expect(SubjectFactReversePagesInputSchema.safeParse({ bookTitle: "Lizards", subjectFamily: "lizards", pages, noQuotations: false }).success).toBe(false);
+  });
+
+  it("renders a subject fact instead of a quotation and retains the palette", () => {
+    const first = pages[0]!;
+    const output = subjectFactReversePageTemplate({ subject: first.subject, fact: first.fact, sourceTitle: first.sourceTitle, sourceUrl: first.sourceUrl });
+    expect(output).toContain("SUBJECT FACT");
+    expect(output).toContain(first.fact);
+    expect(output).toContain("MY COLOUR PALETTE");
+    expect(output).toContain("8 numbered swatches");
+    expect(output).not.toContain("quote");
   });
 });
 
